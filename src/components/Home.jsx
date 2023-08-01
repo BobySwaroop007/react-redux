@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux/es/hooks/useSelector'
 import { useDispatch } from 'react-redux';
 import { addToCart } from './actions';
 import { deleteCart } from './actions';
+import { Remove } from './actions';
 const Home = () => {
     const [price, setPrice] = useState(0);
     const myState = useSelector((state)=> state.fetchDate);
@@ -13,7 +14,7 @@ const Home = () => {
     const total = ()=>{
         let price = 0;
         myState2.map((ele,k)=>{
-            price = ele.price + price; 
+            price = ele.price* ele.quantity + price; 
         });
         setPrice(price);
     };
@@ -61,12 +62,18 @@ const Home = () => {
          <div className='bg-blue-200  rounded shadow-xl mx-auto'>
 <div className='grid grid-cols-2 w-84 bg-indigo-200 mt-4'>
     <p className='font-semibold'>Total items : </p>
-    <p className='font-semibold'>1</p>
+    <p className='font-semibold'>{data.quantity}</p>
     <p className='font-semibold'>you saved</p>
     <p className='font-semibold'>Rs.50</p>
     <p className='font-semibold'>Sub total price :</p>
     <p className='font-semibold'>Rs. 
-    {data.price}</p>
+    {data.price * data.quantity}</p>
+    <div className='bg-blue-400'>
+        <span className='' onClick={()=>{{data.quantity <=1 ? dispatch(deleteCart(data.id)) : dispatch(Remove(data))}}}>-</span>
+        <span className=''>{data.quantity}</span>
+        <span className='' onClick={()=>{dispatch(addToCart(data))}}>+</span>
+        
+    </div>
 
 </div>
 
